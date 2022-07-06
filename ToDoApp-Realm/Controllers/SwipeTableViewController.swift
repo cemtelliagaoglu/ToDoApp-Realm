@@ -8,6 +8,7 @@
 import Foundation
 import SwipeCellKit
 
+
 class SwipeTableViewCellController: UITableViewController,SwipeTableViewCellDelegate {
     
     override func viewDidLoad() {
@@ -40,10 +41,23 @@ class SwipeTableViewCellController: UITableViewController,SwipeTableViewCellDele
         return options
     }
     
-
-    
     func delete(_ indexPath: IndexPath){
         
     }
-    
+    //MARK: - NavigationBar Setup
+    func editNavBar(bgColor: UIColor, _ navigationItem:UINavigationItem, _ navigationController: UINavigationController?){
+        let contrastColor = UIColor.init(contrastingBlackOrWhiteColorOn:bgColor , isFlat: true)
+        let navBarAppearance = UINavigationBarAppearance()
+        let navBar = navigationController?.navigationBar
+        
+       navBarAppearance.configureWithOpaqueBackground()
+        navBarAppearance.titleTextAttributes = [.foregroundColor: contrastColor, .font: UIFont(name: "Verdana", size: 25)!]
+       navBarAppearance.backgroundColor = bgColor
+
+       navigationItem.rightBarButtonItem?.tintColor = contrastColor
+       navigationItem.backBarButtonItem?.tintColor = contrastColor
+       navBar?.tintColor = contrastColor
+
+       navBar?.scrollEdgeAppearance = navBarAppearance
+    }
 }

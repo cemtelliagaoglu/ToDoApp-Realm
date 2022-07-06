@@ -121,7 +121,6 @@
 				537FA8FF34815BCB73E46914 /* Pods-ToDoApp-Realm.debug.xcconfig */,
 				4C7BBC8C001955E3A45F0907 /* Pods-ToDoApp-Realm.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};

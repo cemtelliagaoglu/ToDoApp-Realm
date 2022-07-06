@@ -7,7 +7,7 @@
 
 import UIKit
 import RealmSwift
-import SwiftUI
+import ChameleonFramework
 
 
 class CategoryListViewController: SwipeTableViewCellController{
@@ -18,6 +18,10 @@ class CategoryListViewController: SwipeTableViewCellController{
     override func viewDidLoad() {
         super.viewDidLoad()
         loadCategories()
+        
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        editNavBar(bgColor: .white, navigationItem, navigationController)
     }
     
     //MARK: - Adding New Category
@@ -27,6 +31,7 @@ class CategoryListViewController: SwipeTableViewCellController{
         let action = UIAlertAction(title: "Add", style: .default) { alert in
             let newCategory = Category()
             newCategory.name = textField.text!
+            newCategory.color = UIColor.randomFlat().hexValue()
             self.save(newCategory)
         }
         alert.addAction(action)
@@ -46,17 +51,24 @@ class CategoryListViewController: SwipeTableViewCellController{
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
         cell.textLabel?.text = categories[indexPath.row].name
         
+        if let bgColor = UIColor(hexString: (categories[indexPath.row].color)!){
+            let bgContrast = UIColor.init(contrastingBlackOrWhiteColorOn: bgColor, isFlat: true)
+            cell.textLabel?.textColor = bgContrast
+            cell.backgroundColor = bgColor
+        }
+        
         return cell
     }
     
     //MARK: - TableViewDelegate Method
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         performSegue(withIdentifier: "goToItems", sender: self)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let indexPath = tableView.indexPathForSelectedRow{
         let destinationVC = segue.destination as! TodoListTableViewController
-        destinationVC.selectedCategory = categories[indexPath.row].name
+        destinationVC.selectedCategory = categories[indexPath.row]
         }
     }
     
@@ -88,7 +100,5 @@ class CategoryListViewController: SwipeTableViewCellController{
             }
         }
     }
-    
-    
 }
 
